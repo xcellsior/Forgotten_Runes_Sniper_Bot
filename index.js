@@ -4,8 +4,20 @@ const fs = require("fs");
 const utils = require('./utils.js');
 require('dotenv').config()
 const chain = require('./chain');
+const Web3 = require("web3");
+const web3 = new Web3(
+    new Web3.providers.WebsocketProvider(process.env.RPC2)
+);
+
+let prevVaultWarriors = [];
+let vaultWarriors = [];
+let init = true;
 
 // GLOBAL DATA
+
+// Discord channels
+const TEST_CHANNEL = '954491837920469033';
+const BOT_CHANNEL = '980974479918395402';
 
 let freq = {}; // rarity dictionary
 //let rawWizData = fs.readFileSync('WizAttributes.json');
@@ -49,6 +61,10 @@ client.on('messageCreate', async (message) => {
         msg = msg.trim();
     }
     catch (e){}
+
+    if (isNaN(percentage)){
+        percentage = rarityPercentageDefault;
+    }
 
     switch (msg) {
         case 'nftx warrior': {
@@ -112,6 +128,10 @@ client.login(process.env.TOKEN)
 main();
 
 async function chainMonitor() {
+
+    let detected = await chain.vaultMonitor();
+    console.log(detected);
+
     let alert = await chain.NFTXevents();
     if (alert){
         // post a discord message with our findings
@@ -125,7 +145,8 @@ async function main(){
     console.log(NFTXWarIDs.length)
     //await checkMatch(NFTXWarIDs);
     // start a thread to subscribe to events on NFTX
-    await chainMonitor()
+    //await chainMonitor()
+    await vaultMonitor();
 }
 
 
@@ -154,6 +175,7 @@ function checkMatch(NFTXWarIDs, rarity = rarityPercentageDefault) {
     rarityRatio = numWarriors * rarity;
     let rareWars = [];
     for (let i = 0; i < NFTXWarIDs.length; i++){
+        // TODO remove this once the full collection is revealed
         if(NFTXWarIDs[i] > numWarriors)
         {
             continue;
@@ -196,7 +218,7 @@ async function update() {
     console.log(`total warriors: ${totalWarriors}`)
     let dict = [];
     if(numWarriors < totalWarriors){
-        for (let i = numWarriors; i < totalWarriors - 1; i++) {
+        for (let i = numWarriors; i < totalWarriors; i++) {
             let traits;
             try {
                 traits = await axios.get(`https://portal.forgottenrunes.com/api/warriors/data/${i}`);
@@ -237,4 +259,30 @@ async function update() {
         //print already up to date
     }
 
+}
+
+async function vaultMonitor() {
+    web3.eth.subscribe('newBlockHeaders').on('data', async block => {
+        if (init){
+            init = false;
+            prevVaultWarriors = await chain.getNFTXWarriors();
+        }
+        vaultWarriors = await chain.getNFTXWarriors();
+        let difference = vaultWarriors.filter( x => !prevVaultWarriors.includes(x));
+        prevVaultWarriors = vaultWarriors;
+        if (difference.length === 0)
+        {
+            // jump to new func
+            //main.callDiscord(difference);
+        }
+        callDiscord(block.number);
+    }).on('error', error => {
+        console.log(error);
+    })
+}
+
+
+function callDiscord(difference) {
+    console.log(difference);
+    client.channels.cache.get(TEST_CHANNEL).send(`${difference}`)
 }
