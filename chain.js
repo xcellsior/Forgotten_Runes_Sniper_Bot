@@ -1,13 +1,10 @@
 const Web3 = require("web3");
-const {VaultMonitor} = require("./chain");
 require('dotenv').config()
 const web3 = new Web3(
     new Web3.providers.HttpProvider(process.env.RPC)
 );
 
 const NFTX_WARRIOR_VAULT = '0xe218A21d03dea706d114D9c4490950375f3B7C05';
-
-console.log(main);
 
 async function getTotalWarriors() {
     let block = await web3.eth.getBlockNumber();
