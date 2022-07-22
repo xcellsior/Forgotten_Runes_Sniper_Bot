@@ -52,6 +52,7 @@ client.on('messageCreate', async (message) => {
     switch (msg) {
         case 'nftx warrior': {
             NFTXWarIDs = await chain.getNFTXWarriors();
+            //NFTXWarIDs = ['8366']
             let data = utils.checkMatch(NFTXWarIDs, percentage)
             const result = utils.formatNFTEmbed(data);
             await message.reply({
@@ -109,7 +110,7 @@ client.login(process.env.TOKEN)
 
 async function postMessage(msg) {
     console.log(msg);
-    client.channels.cache.get(TEST_CHANNEL).send(`${msg}`)
+    client.channels.cache.get(BOT_CHANNEL).send(`${msg}`)
 }
 
 

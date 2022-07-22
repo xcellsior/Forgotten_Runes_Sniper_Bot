@@ -1,8 +1,9 @@
 const Web3 = require("web3");
 require('dotenv').config()
 const web3 = new Web3(
-    new Web3.providers.HttpProvider(process.env.RPC)
+    new Web3.providers.WebsocketProvider(process.env.RPC2)
 );
+let count = 0;
 
 const NFTX_WARRIOR_VAULT = '0xe218A21d03dea706d114D9c4490950375f3B7C05';
 
@@ -20,7 +21,7 @@ async function getTotalWarriors() {
 
 async function getNFTXWarriors() {
     let block = await web3.eth.getBlockNumber();
-    console.log(`Fetching NFTX Warriors`);
+    console.log(`Count: ${count++}`);
     const methodHash = web3.utils.sha3('allHoldings()').substr(0, 10);
     const bytes = `${methodHash}`;
     const callResult = await web3.eth.call({

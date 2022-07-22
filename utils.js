@@ -12,9 +12,12 @@ const rarityPercentageDefault = .0039;
 let numWarriors = warData.length;
 let rarityRatio = numWarriors * rarityPercentageDefault;
 let NFTXWarIDs;
+let desiredTraits = require('./desiredtraits');
+let traits = desiredTraits.desiredTraits;
 
 processAttributes();
 
+//TODO modify this to pass in any collection generically
 function processAttributes() {
     //freq = [];
     for (let attributes of warData) {
@@ -29,54 +32,6 @@ function processAttributes() {
     }
 }
 
-// export function parseCmd(message) {
-//     let msg = message.content.toLowerCase();
-//     // grab percentage of rarity
-//     let percentage;
-//     try{
-//         percentage = msg.split('%')
-//         percentage = percentage[1];
-//     }
-//     catch (e){}
-//
-//     switch (msg) {
-//         case 'nftx warrior': {
-//             await message.reply({
-//                 content: 'Generating rarity for warriors, please wait...',
-//             });
-//             break;
-//         }
-//         case 'nftx wizard': {
-//
-//             break;
-//         }
-//         case 'update': {
-//             await message.reply({
-//                 content: 'Checking for updated warrior metadata..',
-//             });
-//             // do the update
-//             await update()
-//
-//             await message.reply({
-//                 content: 'Update complete. Run "nftx warrior %number" to see rarity',
-//             });
-//             break;
-//         }
-//         case 'help':{
-//             await message.reply({
-//                 content: 'maybe I will update help to actually be helpful',
-//             });
-//             break;
-//         }
-//         default: {
-//             message.reply({
-//                 content: 'Hey use the command correctly: like nftx wizard or nftx warrior',
-//             });
-//         }
-//
-//
-//     }
-// }
 function checkMatch(NFTXWarIDs, rarity = rarityPercentageDefault) {
     rarityRatio = numWarriors * rarity;
     let rareWars = [];
@@ -94,7 +49,7 @@ function checkMatch(NFTXWarIDs, rarity = rarityPercentageDefault) {
             //console.log(properties);
             if (checkedTraits.includes(properties['trait_type'])) {
                 // if the frequency of this property value is less than the desired rarity (aka rarer), then spit out ID
-                if (freq[properties['value']] < rarityRatio) {
+                if (freq[properties['value']] < rarityRatio || traits.includes(properties['value'])) {
                     let rarity = freq[properties['value']] / numWarriors * 100;
                     rarity = parseFloat(rarity).toFixed(3);
                     console.log(`Rare trait (rarity ${rarity} %): ${properties['value']} detected on ${NFTXWarIDs[i]}`)
@@ -174,7 +129,7 @@ module.exports = {
         //     embed.addField('Results', `ID: ${nft.id}, Link: ${nft.link}, Trait: ${nft.property}, Rarity: ${nft.rarity}%`, true)
         // })
         // return embed;
-        let result = 'Results:\n';
+        let result = "<@&999350929012834384> I found a rare in the vault: \n";
         data.forEach(nft =>{
             result = result.concat(`ID: ${nft.id}, Link: [NFTX](${nft.link}), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
         })
