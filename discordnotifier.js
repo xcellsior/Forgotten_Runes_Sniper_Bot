@@ -24,8 +24,6 @@ client.on('ready', () =>{
     console.log('bot is armed and ready');
 })
 
-
-
 client.on('messageCreate', async (message) => {
     if (utils.startCheck(message, client)){
         return;
@@ -54,7 +52,7 @@ client.on('messageCreate', async (message) => {
             NFTXWarIDs = await chain.getNFTXWarriors();
             //NFTXWarIDs = ['8366']
             let data = utils.checkMatch(NFTXWarIDs, percentage)
-            const result = utils.formatNFTEmbed(data);
+            const result = utils.formatNoTagging(data);
             await message.reply({
                 content: result
             });
@@ -62,7 +60,6 @@ client.on('messageCreate', async (message) => {
             break;
         }
         case 'nftx wizard': {
-
             break;
         }
         case 'update': {
@@ -71,7 +68,6 @@ client.on('messageCreate', async (message) => {
             });
             // do the update
             await utils.update()
-
             await message.reply({
                 content: `Update complete. I now have data up to ID ${numWarriors-1}`,
             });
@@ -95,14 +91,9 @@ client.on('messageCreate', async (message) => {
             //     content: 'Hey use the command correctly: like nftx wizard or nftx warrior',
             // });
         }
-
-
     }
-
     if (message.content.toLowerCase() === 'nftx warrior') {
         //console.log('im gonnnaaaa pong')
-
-
     }
 })
 

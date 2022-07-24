@@ -13,11 +13,11 @@ let numWarriors = warData.length;
 let rarityRatio = numWarriors * rarityPercentageDefault;
 let NFTXWarIDs;
 let desiredTraits = require('./desiredtraits');
-let traits = desiredTraits.desiredTraits;
+let warriorTraits = desiredTraits.warriorTraits;
 
 processAttributes();
 
-//TODO modify this to pass in any collection generically
+//TODO modify this and checkMatch to pass in any collection generically
 function processAttributes() {
     //freq = [];
     for (let attributes of warData) {
@@ -43,13 +43,14 @@ function checkMatch(NFTXWarIDs, rarity = rarityPercentageDefault) {
             'head',
             'shield',
             'weapon',
-            'rune'
+            'rune',
+            'affinity'
         ]
         for (let properties of warData[NFTXWarIDs[i]]){
             //console.log(properties);
             if (checkedTraits.includes(properties['trait_type'])) {
                 // if the frequency of this property value is less than the desired rarity (aka rarer), then spit out ID
-                if (freq[properties['value']] < rarityRatio || traits.includes(properties['value'])) {
+                if (freq[properties['value']] < rarityRatio || warriorTraits.includes(properties['value'])) {
                     let rarity = freq[properties['value']] / numWarriors * 100;
                     rarity = parseFloat(rarity).toFixed(3);
                     console.log(`Rare trait (rarity ${rarity} %): ${properties['value']} detected on ${NFTXWarIDs[i]}`)
@@ -65,7 +66,6 @@ function checkMatch(NFTXWarIDs, rarity = rarityPercentageDefault) {
     }
     return rareWars;
 }
-
 
 async function update() {
     // get current amount of total warriors from web3
@@ -117,6 +117,14 @@ async function update() {
     }
 }
 
+async function formatNoTagging(data) {
+    let result = "Results: \n";
+    data.forEach(nft =>{
+        result = result.concat(`ID: ${nft.id}, Link: [NFTX](${nft.link}), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
+    })
+    return result;
+}
+
 module.exports = {
     startCheck(message, client) {
         return message.author.id === client.user.id;
@@ -136,6 +144,7 @@ module.exports = {
         return result;
     },
     checkMatch,
-    update
+    update,
+    formatNoTagging
 }
 
