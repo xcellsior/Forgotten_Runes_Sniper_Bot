@@ -52,7 +52,7 @@ client.on('messageCreate', async (message) => {
             NFTXWarIDs = await chain.getNFTXWarriors();
             //NFTXWarIDs = ['8366']
             let data = utils.checkMatch(NFTXWarIDs, percentage)
-            const result = utils.formatNoTagging(data);
+            const result = await utils.formatNoTagging(data);
             await message.reply({
                 content: result
             });

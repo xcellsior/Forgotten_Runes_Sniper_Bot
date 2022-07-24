@@ -25,6 +25,7 @@ async function vaultMonitor() {
             init = false;
             prevVaultWarriors = await chain.getNFTXWarriors();
         }
+        // ToDo distant future: multicall all collection inquiries
         vaultWarriors = await chain.getNFTXWarriors();
         let difference = vaultWarriors.filter( x => !prevVaultWarriors.includes(x));
         prevVaultWarriors = vaultWarriors;
