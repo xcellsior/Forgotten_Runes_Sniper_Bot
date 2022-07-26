@@ -13,7 +13,7 @@ let numWarriors = warData.length;
 let rarityRatio = numWarriors * rarityPercentageDefault;
 let NFTXWarIDs;
 let desiredTraits = require('./desiredtraits');
-let warriorTraits = desiredTraits.warriorTraits;
+let warriorTraits = Object.keys(desiredTraits.warriorTraits);
 
 processAttributes();
 
