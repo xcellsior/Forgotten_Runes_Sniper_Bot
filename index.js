@@ -28,11 +28,9 @@ async function main(){
 async function transferMonitor() {
     warriorContract.events.Transfer({})
         .on('data', async (event) => {
-            console.log(event);
-
             // parse event topics
             const to = `0x${event.raw.topics[2].substr(-40)}`.toLowerCase()
-
+            console.log(web3.eth.abi.decodeParameter('uint256', event.raw.topics[3]));
             // Example:
             // Convert 0x0000000000000000000000000000000000000000000000000000000000003882
             // to ['14466']
@@ -44,7 +42,7 @@ async function transferMonitor() {
             if (to.toLowerCase() === sudoswapVault.toLowerCase()) {
                 let rareDetect = utils.checkMatch(id)
                 if (rareDetect.length > 0) {
-                    const formatMsg = utils.formatNFTEmbed(rareDetect);
+                    const formatMsg = await utils.sudoswapTagging(rareDetect);
                     await client.postMessage(formatMsg);
                 }
             }
@@ -71,7 +69,7 @@ async function vaultMonitor() {
             console.log(difference);
             const rareDetect = utils.checkMatch(difference);
             if (rareDetect.length > 0){
-                const formatMsg = utils.formatNFTEmbed(rareDetect);
+                const formatMsg = await utils.formatNFTEmbed(rareDetect);
                 await client.postMessage(formatMsg);
             }
         }

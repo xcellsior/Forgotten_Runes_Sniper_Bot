@@ -125,26 +125,30 @@ async function formatNoTagging(data) {
     return result;
 }
 
+async function sudoswapTagging(data) {
+    let result = "<@&999350929012834384> I found a rare in the Sudoswap vault: \n";
+    data.forEach(nft =>{
+        result = result.concat(`ID: ${nft.id}, Link: https://sudoswap.xyz/#/browse/buy/0x9690b63Eb85467BE5267A3603f770589Ab12Dc95 (ctrl+f the ID), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
+    })
+    return result;
+
+}
+async function formatNFTEmbed(data) {
+    let result = "<@&999350929012834384> I found a rare in the vault: \n";
+    data.forEach(nft =>{
+        result = result.concat(`ID: ${nft.id}, Link: [NFTX](${nft.link}), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
+    })
+    return result;
+}
+
 module.exports = {
     startCheck(message, client) {
         return message.author.id === client.user.id;
     },
-    formatNFTEmbed(data){
-        // let embed = new Discord.MessageEmbed()
-        //     .setColor("#92BA2F")
-        //     .setDescription("some description");
-        // data.forEach(nft =>{
-        //     embed.addField('Results', `ID: ${nft.id}, Link: ${nft.link}, Trait: ${nft.property}, Rarity: ${nft.rarity}%`, true)
-        // })
-        // return embed;
-        let result = "<@&999350929012834384> I found a rare in the vault: \n";
-        data.forEach(nft =>{
-            result = result.concat(`ID: ${nft.id}, Link: [NFTX](${nft.link}), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
-        })
-        return result;
-    },
+    formatNFTEmbed,
     checkMatch,
     update,
-    formatNoTagging
+    formatNoTagging,
+    sudoswapTagging
 }
 
