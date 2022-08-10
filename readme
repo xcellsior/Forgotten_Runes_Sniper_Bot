@@ -1,3 +1,5 @@
-commands:
+This bot notifies the user via Discord if it detects a rare NFT added to NFTX or Sudoswap.
 
-`nftx warrior`
+Currently monitoring Forgotten Runes Warriors Guild, with future collections to be added
+
+Use the command `nftx warrior` to call the bot in Discord 
