@@ -21,7 +21,7 @@ const warriorTraits = {
     'Chad Bro': 1.25,
     'Superalloy Bot': 1.7,
     'Megasuit': 1.25,
-    'Dark Ronin Armor': 1.25,
+    //'Dark Ronin Armor': 1.25,
     'Street Punk Kobold': 1.25,
     'Argyropoeia Bot': 1.7,
     'Cyber': 1.7,
@@ -36,23 +36,29 @@ const warriorTraits = {
     'Ether Horn Helm': 1.5,
     'Rocket Helm': 1.25,
     'Trident': 1.25,
-    'Amaryllis Fey Sword': 1.25,
+    //'Amaryllis Fey Sword': 1.25,
     'Cat Girl': 1.25,
-    'Agapanthus Fey Sword': 1.25,
+    //'Agapanthus Fey Sword': 1.25,
     'Mug of Ale': 1.25,
     'Flame Thrower': 1.25,
     'Sword of Babylon': 1.25,
     'Silver Dragon Pike': 1.25,
     'Jade Sword': 1.25,
-    'Cyber Axe': 1.25,
-    'Scarlet Macaw': 1.25,
-    'Silver Goat': 1.25,
-    'Attack Drone': 1.25,
+    //'Cyber Axe': 1.25,
+    //'Scarlet Macaw': 1.25,
+    //'Silver Goat': 1.25,
+    //'Attack Drone': 1.25,
 };
 
 const wizardTraits = [
     'Flaming Skull',
-    'Kobold'
+    'Kobold',
+    'Dream Master',
+    'Corvid',
+    'Wicked Wizard',
+    'Jeweled Hummingbird',
+    'Astral Snail',
+    'Mesozoic Cockatrice'
 ]
 
 module.exports = {

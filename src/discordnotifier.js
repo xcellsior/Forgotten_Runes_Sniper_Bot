@@ -10,7 +10,7 @@ const BOT_CHANNEL = '980974479918395402';
 
 // Discord tags
 const VAULT_SNIPER = '999350929012834384';
-
+const ME = '229033492707672065';
 
 const client = new Client({
         intents:[
@@ -99,9 +99,19 @@ client.on('messageCreate', async (message) => {
 
 client.login(process.env.TOKEN)
 
-async function postMessage(msg) {
+
+// possible todo rename this to postAlert and have a standalone postmsg
+async function postMessage(msg, alertMe = true) {
     console.log(msg);
     client.channels.cache.get(BOT_CHANNEL).send(`${msg}`)
+
+    // todo possibly email or other notification(s)
+    // if (alertMe) {
+    //     client.users.get(ME).send(msg);
+    //     client.users.get(ME).send(msg);
+    //     client.users.get(ME).send(msg);
+    //     client.users.get(ME).send(msg);
+    // }
 }
 
 
