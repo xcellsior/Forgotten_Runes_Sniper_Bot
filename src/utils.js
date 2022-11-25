@@ -10,7 +10,7 @@ let rawWarData = fs.readFileSync('WarAttributes.json');
 let warData = JSON.parse(rawWarData);
 let rawWizData = fs.readFileSync('WizAttributes.json');
 let wizData = JSON.parse(rawWizData);
-const rarityPercentageDefault = .0039; // warriors
+const rarityPercentageDefault = .00362; // warriors
 const rarityDefaultWizards = .0055;
 const NUM_WIZARDS = 10000;
 let numWarriors = warData.length;
@@ -19,6 +19,8 @@ let rarityRatio = numWarriors * rarityPercentageDefault;
 let NFTXWarIDs;
 let desiredTraits = require('./desiredtraits');
 let warriorTraits = Object.keys(desiredTraits.warriorTraits);
+const wizardTraits = desiredTraits.wizardTraits;
+
 const warTraits = [
     'companion',
     'body',
@@ -72,12 +74,12 @@ function checkMatch(NFTX_Ids, collection = 'warriors', rarity = rarityPercentage
         rarityRatio = NUM_WIZARDS * rarityDefaultWizards;
         for (let i = 0; i < NFTX_Ids.length; i++) {
             // cross check if any values are sub .5% in rarity
-            for (let properties of wizData[NFTX_Ids[i]]) {
+            for (let properties of wizData[NFTX_Ids[i]].attributes) {
                 //console.log(properties);
-                if (warTraits.includes(properties['trait_type'])) {
+                if (wizTraits.includes(properties['trait_type'])) {
                     // if the frequency of this property value is less than the desired rarity (aka rarer), then spit out ID
-                    if (freq[properties['value']] < rarityRatio || warriorTraits.includes(properties['value'])) {
-                        let rarity = freq[properties['value']] / numWarriors * 100;
+                    if (freqWiz[properties['value']] < rarityRatio || wizardTraits.includes(properties['value'])) {
+                        let rarity = freqWiz[properties['value']] / NUM_WIZARDS * 100;
                         rarity = parseFloat(rarity).toFixed(3);
                         console.log(`Rare trait (rarity ${rarity} %): ${properties['value']} detected on ${NFTX_Ids[i]}`)
                         rareNFTs.push({

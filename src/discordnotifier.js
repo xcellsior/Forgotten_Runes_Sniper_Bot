@@ -2,7 +2,7 @@ const {Client, Intents} = require("discord.js");
 const utils = require("./utils.js");
 const chain = require('./chain');
 const rarityPercentageDefault = .0039;
-let NFTXWarIDs, numWarriors;
+let NFTXWarIDs, numWarriors, NFTXWizIDs;
 
 // Discord channels
 const TEST_CHANNEL = '954491837920469033';
@@ -60,6 +60,13 @@ client.on('messageCreate', async (message) => {
             break;
         }
         case 'nftx wizard': {
+            NFTXWizIDs = await chain.getNFTXWizards();
+            let data = utils.checkMatch(NFTXWizIDs, 'wizards', percentage)
+            const result = await utils.formatNoTagging(data);
+            await message.reply({
+                content: result
+            });
+            //await message.channel.send({embeds: [embed]})
             break;
         }
         case 'update': {

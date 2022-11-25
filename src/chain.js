@@ -35,6 +35,7 @@ async function getNFTXWarriors() {
     return decodedResult;
 }
 async function getNFTXWizards() {
+    let block = await web3.eth.getBlockNumber();
     const methodHash = web3.utils.sha3('allHoldings()').substr(0, 10);
     const bytes = `${methodHash}`;
     const callResult = await web3.eth.call({
@@ -42,7 +43,8 @@ async function getNFTXWizards() {
         data: bytes.toString()
     }, block);
 
-    return web3.eth.abi.decodeParameter('uint256[]', callResult);
+    const decodedResult = web3.eth.abi.decodeParameter('uint256[]', callResult);
+    return decodedResult;
 }
 
 /* Getter function for the last number of blocks */
