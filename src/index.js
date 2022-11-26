@@ -100,7 +100,7 @@ async function sudoWizardMonitor() {
 
             console.log(`ID: ${id} transfer detected`)
             if (to.toLowerCase() === sudoWizardVault.toLowerCase()) {
-                let rareDetect = utils.checkMatch(id)
+                let rareDetect = utils.checkMatch(id, 'wizards')
                 if (rareDetect.length > 0) {
                     const formatMsg = await utils.sudoswapTagging(rareDetect, WIZARD_ADDRESS);
                     await client.postMessage(formatMsg);
@@ -132,7 +132,7 @@ async function NFTXVaultMonitor() {
                 const formatMsg = await utils.formatNFTEmbed(rareDetect);
                 await client.postMessage(formatMsg);
             }
-            rareDetect = utils.checkMatch(differenceWiz);
+            rareDetect = utils.checkMatch(differenceWiz, 'wizards');
             if (rareDetect.length > 0){
                 const formatMsg = await utils.formatNFTEmbed(rareDetect);
                 await client.postMessage(formatMsg);
