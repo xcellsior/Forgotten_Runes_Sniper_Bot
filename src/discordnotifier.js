@@ -7,6 +7,7 @@ let NFTXWarIDs, numWarriors, NFTXWizIDs;
 // Discord channels
 const TEST_CHANNEL = '954491837920469033';
 const BOT_CHANNEL = '980974479918395402';
+const ALERTS_CHANNEL = '1054502938409697291';
 
 // Discord tags
 const VAULT_SNIPER = '999350929012834384';
@@ -110,7 +111,8 @@ client.login(process.env.TOKEN)
 // possible todo rename this to postAlert and have a standalone postmsg
 async function postMessage(msg, alertMe = true) {
     console.log(msg);
-    client.channels.cache.get(BOT_CHANNEL).send(`${msg}`)
+    client.channels.cache.get(BOT_CHANNEL).send(`${msg}`);
+    client.channels.cache.get(ALERTS_CHANNEL).send(`${msg}`);
 
     // todo possibly email or other notification(s)
     // if (alertMe) {

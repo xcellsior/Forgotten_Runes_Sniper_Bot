@@ -76,7 +76,7 @@ async function sudoWarriorMonitor() {
             // alternatively use the actual built in web3 function for this: decodeParameter TODO test this
             // const id[0] = web3.eth.abi.decodeParameter('uint256', event.raw.topics[3]);
 
-            console.log(`ID: ${id} transfer detected`)
+            console.log(`Warrior ID: ${id} transfer detected`)
             if (to.toLowerCase() === sudoWarriorVault.toLowerCase()) {
                 let rareDetect = utils.checkMatch(id)
                 if (rareDetect.length > 0) {
@@ -98,7 +98,7 @@ async function sudoWizardMonitor() {
             let id = [];
             id[0] = web3.eth.abi.decodeParameter('uint256', event.raw.topics[3]);
 
-            console.log(`ID: ${id} transfer detected`)
+            console.log(`Wizard ID: ${id} transfer detected`)
             if (to.toLowerCase() === sudoWizardVault.toLowerCase()) {
                 let rareDetect = utils.checkMatch(id, 'wizards')
                 if (rareDetect.length > 0) {
