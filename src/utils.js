@@ -21,6 +21,8 @@ let desiredTraits = require('./desiredtraits');
 let warriorTraits = Object.keys(desiredTraits.warriorTraits);
 const wizardTraits = desiredTraits.wizardTraits;
 
+const VAULT_SNIPER = '1054505352432988220';
+
 const warTraits = [
     'companion',
     'body',
@@ -179,7 +181,7 @@ async function formatNoTagging(data) {
 }
 
 async function sudoswapTagging(data, collection) {
-    let result = "<@&999350929012834384> I found a rare in the Sudoswap vault: \n";
+    let result = `<@&${VAULT_SNIPER}> I found a rare in the Sudoswap vault: \n`;
     data.forEach(nft =>{
         result = result.concat(`ID: ${nft.id}, Link: https://sudoswap.xyz/#/browse/buy/${collection} (ctrl+f the ID), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
     })
@@ -187,7 +189,7 @@ async function sudoswapTagging(data, collection) {
 
 }
 async function formatNFTEmbed(data) {
-    let result = "<@&999350929012834384> I found a rare in the vault: \n";
+    let result = `<@&${VAULT_SNIPER}> I found a rare in the vault: \n`;
     data.forEach(nft =>{
         result = result.concat(`ID: ${nft.id}, Link: [NFTX](${nft.link}), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
     })

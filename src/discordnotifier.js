@@ -111,7 +111,7 @@ client.login(process.env.TOKEN)
 // possible todo rename this to postAlert and have a standalone postmsg
 async function postMessage(msg, alertMe = true) {
     console.log(msg);
-    client.channels.cache.get(BOT_CHANNEL).send(`${msg}`);
+    //client.channels.cache.get(BOT_CHANNEL).send(`${msg}`);
     client.channels.cache.get(ALERTS_CHANNEL).send(`${msg}`);
 
     // todo possibly email or other notification(s)
