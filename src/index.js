@@ -30,7 +30,11 @@ const wizardContract = new web3.eth.Contract(
     wizardAbi,
     WIZARD_ADDRESS
 );
-const sudoWarriorVault = '0x24979C90855a737911D26fBB78b1465019e13e08';
+//const sudoWarriorVault = '0x24979C90855a737911D26fBB78b1465019e13e08';
+const sudoWarriorVault = [
+    '0xd477c45ce6ad748c5efa37f61c423d82f55dce0d',
+    '0xca3cb0bed10c305aa603b0d168389deeece99f5a'
+];
 const sudoWizardVault = '0xA7e8058C30a592AA5b891CF24c75D7745CfC7c86';
 const NFTX_WARRIOR_VAULT = '0x9690b63Eb85467BE5267A3603f770589Ab12Dc95';
 
@@ -73,15 +77,20 @@ async function sudoWarriorMonitor() {
             id[0] = parseInt(Number(`0x${id[0]}`).toString(),10).toString(); // convert to int string
             // please don't @ me for how stupid this looks
 
-            // alternatively use the actual built in web3 function for this: decodeParameter TODO test this
-            // const id[0] = web3.eth.abi.decodeParameter('uint256', event.raw.topics[3]);
+            //id[0] = web3.eth.abi.decodeParameter('uint256', event.raw.topics[3]);
 
             console.log(`Warrior ID: ${id} transfer detected`)
-            if (to.toLowerCase() === sudoWarriorVault.toLowerCase()) {
-                let rareDetect = utils.checkMatch(id)
+
+            // if the warrior being transferred is going to sudoswap...
+            if (sudoWarriorVault.includes(to.toLowerCase())) {
+                console.log("Transfer was to Sudoswap, detecting rarity...");
+                let rareDetect = utils.checkMatch(id);
                 if (rareDetect.length > 0) {
                     const formatMsg = await utils.sudoswapTagging(rareDetect, WARRIOR_ADDRESS);
                     await client.postMessage(formatMsg);
+                }
+                else {
+                    console.log("... no rares found");
                 }
             }
         })

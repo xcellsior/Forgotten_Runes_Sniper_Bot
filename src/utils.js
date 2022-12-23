@@ -66,7 +66,6 @@ function processAttributes() {
             }
         }
     }
-    console.log(freqWiz)
 }
 
 function checkMatch(NFTX_Ids, collection = 'warriors', rarity = rarityPercentageDefault) {
