@@ -58,7 +58,14 @@ const wizardTraits = [
     'Wicked Wizard',
     'Jeweled Hummingbird',
     'Astral Snail',
-    'Mesozoic Cockatrice'
+    'Mesozoic Cockatrice',
+    'Red Wizard',
+    'Purple Wizard',
+    'Yellow Wizard',
+    'Green Wizard',
+    'Blue Wizard',
+    'White Wizard',
+    'Brown Wizard'
 ]
 
 module.exports = {
