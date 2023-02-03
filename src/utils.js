@@ -182,7 +182,7 @@ async function formatNoTagging(data) {
 async function sudoswapTagging(data, collection) {
     let result = `<@&${VAULT_SNIPER}> I found a rare in the Sudoswap vault: \n`;
     data.forEach(nft =>{
-        result = result.concat(`ID: ${nft.id}, Link: https://sudoswap.xyz/#/browse/buy/${collection} (ctrl+f the ID), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
+        result = result.concat(`ID: ${nft.id}, Link: https://sudoswap.xyz/#/item/${collection}/${nft.id} (ctrl+f the ID), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
     })
     return result;
 
