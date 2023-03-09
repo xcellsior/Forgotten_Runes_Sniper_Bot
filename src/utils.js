@@ -1,6 +1,8 @@
 const fs = require("fs");
 const chain = require("./chain");
 const axios = require("axios");
+const {MessageEmbed, MessageAttachment} = require("discord.js");
+
 // GLOBAL DATA
 let freq = {}; // rarity dictionary
 let freqWiz = {}; // wizard rarity dictionary
@@ -16,12 +18,24 @@ const NUM_WIZARDS = 10000;
 let numWarriors = warData.length;
 console.log("num warriors: " + numWarriors);
 let rarityRatio = numWarriors * rarityPercentageDefault;
-let NFTXWarIDs;
 let desiredTraits = require('./desiredtraits');
 let warriorTraits = Object.keys(desiredTraits.warriorTraits);
 const wizardTraits = desiredTraits.wizardTraits;
 
 const VAULT_SNIPER = '1054505352432988220';
+const WARRIOR_ADDRESS = '0x9690b63Eb85467BE5267A3603f770589Ab12Dc95';
+const WIZARD_ADDRESS = '0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42';
+
+// const sdk = require('api')('@reservoirprotocol/v1.0#2l59jy7wlduobdqn');
+//
+// sdk.auth('demo-api-key');
+// sdk.getTokensV5({
+//     collection: '0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42',
+//     tokens: '0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42%3A9648',
+//     accept: '*/*'
+// })
+//     .then(({ data }) => console.log(data))
+//     .catch(err => console.error(err));
 
 const warTraits = [
     'companion',
@@ -68,6 +82,8 @@ function processAttributes() {
     }
 }
 
+// IDEA: Collection integrations: make a separate file for parsing the metadata of any new collection
+// Pass the collection name (or an ID) and move this somewhat redundant code to a new file
 function checkMatch(NFTX_Ids, collection = 'warriors', rarity = rarityPercentageDefault) {
     let rareNFTs = [];
 
@@ -182,25 +198,25 @@ async function formatNoTagging(data) {
 async function sudoswapTagging(data, collection) {
     let result = `<@&${VAULT_SNIPER}> I found a rare in the Sudoswap vault: \n`;
     data.forEach(nft =>{
-        result = result.concat(`ID: ${nft.id}, Link: https://sudoswap.xyz/#/item/${collection}/${nft.id} (ctrl+f the ID), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
+        result = result.concat(`ID: ${nft.id}, Link: https://sudoswap.xyz/#/item/${collection}/${nft.id}, Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
     })
     return result;
-
 }
-async function formatNFTEmbed(data) {
-    let result = `<@&${VAULT_SNIPER}> I found a rare in the vault: \n`;
-    data.forEach(nft =>{
-        result = result.concat(`ID: ${nft.id}, Link: [NFTX](${nft.link}), Trait: ${nft.property}, Rarity: ${nft.rarity}%\n`)
-    })
-    return result;
+
+
+// Call Reservoir to see if candidate NFTs are flagged on OS
+// take an array of IDs, and return array of corresponding flags
+async function checkFlagged(ids) {
+
+
 }
 
 module.exports = {
     startCheck (message, client) { return message.author.id === client.user.id; },
-    formatNFTEmbed,
     checkMatch,
     update,
     formatNoTagging,
-    sudoswapTagging
+    sudoswapTagging,
+    checkFlagged
 }
 

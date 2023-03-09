@@ -1,13 +1,22 @@
 {
   "dependencies": {
+    "@opensea/stream-js": "^0.0.20",
+    "@reservoir0x/reservoir-sdk": "^0.3.5",
+    "api": "^4.5.2",
+    "axios": "^0.27.2",
+    "axios-parallel": "^1.1.2",
     "discord.js": "^13.7.0",
     "dotenv": "^16.0.1",
+    "ethers": "^6.0.2",
+    "express": "^4.18.1",
+    "forever-monitor": "^3.0.3",
+    "twilio": "^3.83.4",
     "web3": "^1.7.3",
-    "axios": "^0.27.2"
+    "ws": "^8.8.1"
   },
   "name": "frwc_nftx_bot",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -31,6 +31,7 @@ const wizardContract = new web3.eth.Contract(
     WIZARD_ADDRESS
 );
 //const sudoWarriorVault = '0x24979C90855a737911D26fBB78b1465019e13e08';
+// TODO use thegraph api to occasionally check and update sudo addresses
 const sudoWarriorVault = [
     '0xd477c45ce6ad748c5efa37f61c423d82f55dce0d',
     '0xca3cb0bed10c305aa603b0d168389deeece99f5a'
@@ -86,8 +87,11 @@ async function sudoWarriorMonitor() {
                 console.log("Transfer was to Sudoswap, detecting rarity...");
                 let rareDetect = utils.checkMatch(id);
                 if (rareDetect.length > 0) {
-                    const formatMsg = await utils.sudoswapTagging(rareDetect, WARRIOR_ADDRESS);
-                    await client.postMessage(formatMsg);
+                    //const formatMsg = await utils.sudoswapTagging(rareDetect, WARRIOR_ADDRESS);
+                    await client.formatNFTEmbed(rareDetect, 'warriors');
+                    // check for flagged tokens
+                    // let flagged = utils.checkFlagged(id, WARRIOR_ADDRESS);
+
                 }
                 else {
                     console.log("... no rares found");
@@ -111,8 +115,8 @@ async function sudoWizardMonitor() {
             if (to.toLowerCase() === sudoWizardVault.toLowerCase()) {
                 let rareDetect = utils.checkMatch(id, 'wizards')
                 if (rareDetect.length > 0) {
-                    const formatMsg = await utils.sudoswapTagging(rareDetect, WIZARD_ADDRESS);
-                    await client.postMessage(formatMsg);
+                    //const formatMsg = await utils.sudoswapTagging(rareDetect, WIZARD_ADDRESS);
+                    await client.formatNFTEmbed(rareDetect, 'wizards');
                 }
             }
         })
@@ -138,13 +142,11 @@ async function NFTXVaultMonitor() {
         {
             let rareDetect = utils.checkMatch(differenceWar);
             if (rareDetect.length > 0){
-                const formatMsg = await utils.formatNFTEmbed(rareDetect);
-                await client.postMessage(formatMsg);
+                await client.formatNFTEmbed(rareDetect, 'warriors');
             }
             rareDetect = utils.checkMatch(differenceWiz, 'wizards');
             if (rareDetect.length > 0){
-                const formatMsg = await utils.formatNFTEmbed(rareDetect);
-                await client.postMessage(formatMsg);
+                await client.formatNFTEmbed(rareDetect, 'wizards');
             }
         }
         }).on('error', error => {
