@@ -10,8 +10,9 @@ const BOT_CHANNEL = '980974479918395402';
 const ALERTS_CHANNEL = '1054502938409697291';
 
 // Discord tags
-const VAULT_SNIPER = '999350929012834384';
+const VAULT_SNIPER = '1054505352432988220';
 const ME = '229033492707672065';
+const YEET = '1083186631839846431';
 
 const client = new Client({
         intents:[
@@ -63,20 +64,21 @@ client.on('messageCreate', async (message) => {
             NFTXWarIDs = await chain.getNFTXWarriors();
             //NFTXWarIDs = ['8366']
             let data = utils.checkMatch(NFTXWarIDs, percentage)
-            const result = await utils.formatNoTagging(data);
-            await message.reply({
-                content: result
-            });
+            await formatNFTEmbedNoTags(data, 'warriors', message)
+            // await message.reply({
+            //     content: result
+            // });
             //await message.channel.send({embeds: [embed]})
             break;
         }
         case 'nftx wizard': {
             NFTXWizIDs = await chain.getNFTXWizards();
             let data = utils.checkMatch(NFTXWizIDs, 'wizards', percentage)
-            const result = await utils.formatNoTagging(data);
-            await message.reply({
-                content: result
-            });
+            await formatNFTEmbedNoTags(data, 'wizards', message)
+            //const result = await utils.formatNoTagging(data);
+            // await message.reply({
+            //     content: result
+            // });
             //await message.channel.send({embeds: [embed]})
             break;
         }
@@ -196,6 +198,45 @@ async function postMessageDebug(msg) {
 
 }
 
+async function formatNFTEmbedNoTags(data, collection, message) {
+    //let result = `<@&${VAULT_SNIPER}> I found a rare in the vault: \n`;
+    //await client.channels.cache.get(TEST_CHANNEL).send(`<@&${YEET}> I found a rare in the vault: \n`);
+    let nftsById = {};
+    data.forEach(nft =>{
+        if (!nftsById[nft.id]) {
+            // If we haven't seen an NFT with this ID yet, create a new entry in the object
+            nftsById[nft.id] = {
+                id: nft.id,
+                link: nft.link,
+                property: nft.property,
+                rarity: nft.rarity
+            };
+        }
+        else {
+            // If we've seen an NFT with this ID before, add the link to the existing entry and update the rarity
+            nftsById[nft.id].property += `, ${nft.property}`
+            if (nft.rarity < nftsById[nft.id].rarity) {
+                nftsById[nft.id].rarity = nft.rarity; //only display rarest trait %
+            }
+        }
+        //result += Object.values(nftsById).map(nft => `ID: ${nft.id}, Trait(s): ${nft.property}, Rarest trait: ${nft.rarity}%\n`).join('');
+    })
+    // for each object in nftsById make a post to channel with embed
+    for (const nft of Object.values(nftsById)) {
+        const NFTImage = new MessageAttachment(`./${collection}/${nft.id}.png`);
+        const Url = new URL(nft.link)
+        const base = Url.hostname.split('.')[0]; // should just spit out "sudoswap" or "nftx"
+        const Embed = new MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle(`Click here to go to ${base}`)
+            .setDescription(`ID: ${nft.id}, Rare trait(s): ${nft.property}. \nRarest trait: ${nft.rarity}%`)
+            .setURL(`${nft.link}`)
+            .setImage(`attachment://${nft.id}.png`)
+
+        await message.reply({ embeds: [Embed], files: [NFTImage] })
+    }
+}
+
 async function formatNFTEmbed(data, collection) {
     //let result = `<@&${VAULT_SNIPER}> I found a rare in the vault: \n`;
     await client.channels.cache.get(ALERTS_CHANNEL).send(`<@&${VAULT_SNIPER}> I found a rare in the vault: \n`);
@@ -222,8 +263,8 @@ async function formatNFTEmbed(data, collection) {
     // for each object in nftsById make a post to channel with embed
     for (const nft of Object.values(nftsById)) {
         const NFTImage = new MessageAttachment(`./${collection}/${nft.id}.png`);
-        const URL = new URL(nft.link)
-        const base = URL.hostname.split('.')[0]; // should just spit out "sudoswap" or "nftx"
+        const Url = new URL(nft.link)
+        const base = Url.hostname.split('.')[0]; // should just spit out "sudoswap" or "nftx"
         const Embed = new MessageEmbed()
             .setColor('#0099ff')
             .setTitle(`Click here to go to ${base}`)
