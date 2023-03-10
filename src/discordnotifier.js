@@ -50,12 +50,12 @@ client.on('messageCreate', async (message) => {
         percentage = rarityPercentageDefault;
     }
     let number;
-    try{
-        number = msg.split('!');
-        number = number[1];
-        msg = '!';
-    }
-    catch (e){}
+    // try{
+    //     number = msg.split('!');
+    //     number = number[1];
+    //     msg = '!';
+    // }
+    // catch (e){}
 
 
     switch (msg) {
