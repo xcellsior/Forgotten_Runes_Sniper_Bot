@@ -87,6 +87,7 @@ async function sudoWarriorMonitor() {
                 console.log("Transfer was to Sudoswap, detecting rarity...");
                 let rareDetect = utils.checkMatch(id);
                 if (rareDetect.length > 0) {
+                    rareDetect = utils.formatSudoLink(rareDetect, 'warriors');
                     //const formatMsg = await utils.sudoswapTagging(rareDetect, WARRIOR_ADDRESS);
                     await client.formatNFTEmbed(rareDetect, 'warriors');
                     // check for flagged tokens
@@ -115,6 +116,7 @@ async function sudoWizardMonitor() {
             if (to.toLowerCase() === sudoWizardVault.toLowerCase()) {
                 let rareDetect = utils.checkMatch(id, 'wizards')
                 if (rareDetect.length > 0) {
+                    rareDetect = utils.formatSudoLink(rareDetect, 'wizards')
                     //const formatMsg = await utils.sudoswapTagging(rareDetect, WIZARD_ADDRESS);
                     await client.formatNFTEmbed(rareDetect, 'wizards');
                 }

@@ -203,6 +203,22 @@ async function sudoswapTagging(data, collection) {
     return result;
 }
 
+function formatSudoLink(rares, collection = 'warriors') {
+    switch(collection) {
+        case 'warriors':
+            rares.forEach((rare) => {
+                rare.link = `https://sudoswap.xyz/#/item/${WARRIOR_ADDRESS}/${rare.id}`;
+            })
+            break;
+        case 'wizards':
+            rares.forEach((rare) => {
+                rare.link = `https://sudoswap.xyz/#/item/${WIZARD_ADDRESS}/${rare.id}`;
+            })
+            break;
+    }
+    return rares;
+}
+
 
 // Call Reservoir to see if candidate NFTs are flagged on OS
 // take an array of IDs, and return array of corresponding flags
@@ -216,6 +232,7 @@ module.exports = {
     checkMatch,
     update,
     formatNoTagging,
+    formatSudoLink,
     sudoswapTagging,
     checkFlagged
 }
